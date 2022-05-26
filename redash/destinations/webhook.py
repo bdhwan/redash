@@ -27,7 +27,7 @@ class Webhook(BaseDestination):
 
     def notify(self, alert, query, user, new_state, app, host, options):
         try:
-            logging.error("!!!!!webhook will call jandi1")
+            logging.error("!!!!!webhook will call jandi11")
             data = {
                 "event": "alert_state_change",
                 "alert": serialize_alert(alert, full=False),
@@ -37,7 +37,7 @@ class Webhook(BaseDestination):
 
             data["alert"]["description"] = alert.custom_body
             data["alert"]["title"] = alert.custom_subject
-            logging.error("!!!!!webhook will call jandi2")
+            logging.error("!!!!!webhook will call jandi22")
             logging.error(options.get("url"))
 
             headers = {"Content-Type": "application/json", "Accept":"application/vnd.tosslab.jandi-v2+json"}
@@ -57,6 +57,7 @@ class Webhook(BaseDestination):
             )
 
             logging.error("!!!!!webhook will call jandi3")
+            logging.error(json_dumps(resp))
             
             if resp.status_code != 200:
                 logging.error(
