@@ -1,11 +1,9 @@
 on:
   push:
-    branches:
-      - deploy/jandi
-name: deploy_jandi
+
+name: deploy_branch
 
 env:
-  IMAGE_BRANCH: jandi
   IMAGE_NAME: bdhwan/redash
 
 jobs:
@@ -32,9 +30,12 @@ jobs:
             ./packages/fumi-user-capacitor/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/npm-shrinkwrap.json') }}
 
-      - name: set branch
-        id: branch
-        run: echo "::set-output name=branch::${{ env.IMAGE_BRANCH }}"
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+        
+
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(TZ=Asia/Seoul date +'%Y%m%d_%H%M')"
@@ -46,8 +47,8 @@ jobs:
         with:
           images: ${{env.IMAGE_NAME}}
           tags: |
-            type=raw,value=${{ steps.branch.outputs.branch }}
-            type=raw,value=${{ steps.branch.outputs.branch }}_${{ steps.date.outputs.date }}
+            type=raw,value=${{ steps.extract_branch.outputs.branch }}
+            type=raw,value=${{ steps.extract_branch.outputs.branch }}_${{ steps.date.outputs.date }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
