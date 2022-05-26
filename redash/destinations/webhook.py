@@ -27,28 +27,37 @@ class Webhook(BaseDestination):
 
     def notify(self, alert, query, user, new_state, app, host, options):
         try:
+            logging.error("!!!!!webhook will call jandi1")
             data = {
                 "event": "alert_state_change",
                 "alert": serialize_alert(alert, full=False),
                 "url_base": host,
+                "body": alert.custom_subject
             }
 
             data["alert"]["description"] = alert.custom_body
             data["alert"]["title"] = alert.custom_subject
+            logging.error("!!!!!webhook will call jandi2")
+            logging.error(options.get("url"))
 
             headers = {"Content-Type": "application/json", "Accept":"application/vnd.tosslab.jandi-v2+json"}
-            auth = (
-                HTTPBasicAuth(options.get("username"), options.get("password"))
-                if options.get("username")
-                else None
-            )
+            # auth = (
+            #     HTTPBasicAuth(options.get("username"), options.get("password"))
+            #     if options.get("username")
+            #     else None
+            # )
+            auth = None
+
             resp = requests.post(
                 options.get("url"),
                 data=json_dumps(data),
                 auth=auth,
                 headers=headers,
-                timeout=5.0,
+                timeout=50,
             )
+
+            logging.error("!!!!!webhook will call jandi3")
+            
             if resp.status_code != 200:
                 logging.error(
                     "webhook send ERROR. status_code => {status}".format(
