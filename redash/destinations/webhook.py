@@ -47,7 +47,7 @@ class Webhook(BaseDestination):
             #     else None
             # )
             auth = None
-            resp.request("POST", url, headers=headers, data=json_dumps(data))
+            resp.request("POST", options.get("url"), headers=headers, data=json_dumps(data))
             # resp = requests.post(
             #     options.get("url"),
             #     data=json_dumps(data),
