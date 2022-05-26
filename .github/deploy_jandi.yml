@@ -1,6 +1,5 @@
-on:
-  push:
 
+on: [push]
 name: deploy_branch
 
 env:
