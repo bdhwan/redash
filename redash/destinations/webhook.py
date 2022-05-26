@@ -36,7 +36,7 @@ class Webhook(BaseDestination):
             data["alert"]["description"] = alert.custom_body
             data["alert"]["title"] = alert.custom_subject
 
-            headers = {"Content-Type": "application/json"}
+            headers = {"Content-Type": "application/json", "Accept":"application/vnd.tosslab.jandi-v2+json"}
             auth = (
                 HTTPBasicAuth(options.get("username"), options.get("password"))
                 if options.get("username")
