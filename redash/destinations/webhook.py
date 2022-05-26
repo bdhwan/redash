@@ -27,7 +27,7 @@ class Webhook(BaseDestination):
 
     def notify(self, alert, query, user, new_state, app, host, options):
         try:
-            logging.error("!!!!!webhook will call jandi11")
+            logging.error("!!!!!change post webhook will call jandi11")
             data = {
                 "event": "alert_state_change",
                 "alert": serialize_alert(alert, full=False),
@@ -47,17 +47,19 @@ class Webhook(BaseDestination):
             #     else None
             # )
             auth = None
-
-            resp = requests.post(
-                options.get("url"),
-                data=json_dumps(data),
-                auth=auth,
-                headers=headers,
-                timeout=50,
-            )
-
-            logging.error("!!!!!webhook will call jandi3")
-            logging.error(json_dumps(resp))
+            resp.request("POST", url, headers=headers, data=json_dumps(data))
+            # resp = requests.post(
+            #     options.get("url"),
+            #     data=json_dumps(data),
+            #     auth=auth,
+            #     headers=headers,
+            #     timeout=50,
+            # )
+            logging.error(json_dumps(data))
+            logging.error("!!!!!webhook will call jandi will print body")
+            logging.error(resp.text)
+            
+            logging.error(resp.body)
             
             if resp.status_code != 200:
                 logging.error(
